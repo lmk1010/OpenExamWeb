@@ -1,12 +1,22 @@
 import { useState } from 'react'
 import { DOWNLOADS, FAQ, FEATURES, PRIMARY, RELEASE } from './data.js'
-import { Arrow, Footer, Icon, Nav, usePlatform, useRoute, useTheme } from './ui.jsx'
+import {
+  Arrow,
+  Footer,
+  Icon,
+  Nav,
+  usePlatform,
+  useReveal,
+  useRoute,
+  useTheme,
+} from './ui.jsx'
 
 function Home({ go, platform, theme }) {
   // 深色站配深色截图、浅色站配浅色截图。桌面端截图目前只有浅色一版，
   // 深色版补齐前先沿用它，不然图和页面差着一个色调，看着像贴错了。
-  const shot = (name) => `/shots/${name}-${theme === 'light' ? 'light' : 'dark'}.jpg`
-  const desk = theme === 'light' ? '/brand/demo1.png' : '/brand/demo1.png'
+  const light = theme === 'light'
+  const shot = (name) => `/shots/${name}-${light ? 'light' : 'dark'}.jpg`
+  const desk = light ? '/brand/desk-light.png' : '/brand/desk-dark.png'
   const primary = PRIMARY[platform]
   const [open, setOpen] = useState(0)
 
@@ -54,7 +64,7 @@ function Home({ go, platform, theme }) {
         <img className="phone" src={shot('home')} alt="OpenExam 手机端练习首页" loading="lazy" />
       </section>
 
-      <section className="stats">
+      <section className="stats" data-reveal>
         {[
           ['15,936', '道真题'],
           ['137', '套历年卷'],
@@ -68,7 +78,7 @@ function Home({ go, platform, theme }) {
         ))}
       </section>
 
-      <section className="features" id="features">
+      <section className="features" id="features" data-reveal>
         <h2>刷题该有的样子</h2>
         <p className="sub">不做社区，不做排行榜。把做题、复盘、看进步这三件事做扎实。</p>
         <div className="grid">
@@ -84,7 +94,35 @@ function Home({ go, platform, theme }) {
         </div>
       </section>
 
-      <section className="gallery">
+      <section className="split" data-reveal>
+        <div className="split-text">
+          <span className="tag">桌面端</span>
+          <h2>做完一套，报告立刻摆在眼前</h2>
+          <p>
+            正确率趋势、分类正确率、逐题分布、和历史平均的对比，一屏看完。
+            错的题一键重做，看不懂的直接问 AI。
+          </p>
+        </div>
+        <div className="split-shot">
+          <img src="/brand/report-dark.png" alt="OpenExam 桌面端成绩报告" loading="lazy" />
+        </div>
+      </section>
+
+      <section className="split reverse" data-reveal>
+        <div className="split-text">
+          <span className="tag">成就</span>
+          <h2>练到哪一步，自己看得见</h2>
+          <p>
+            题量、坚持、精度、考场、攻坚五类成就，铜银金铂四个等级。
+            全部按本机数据算，达成时当场弹出来。
+          </p>
+        </div>
+        <div className="split-shot">
+          <img src="/brand/badge-desk-dark.png" alt="OpenExam 成就解锁" loading="lazy" />
+        </div>
+      </section>
+
+      <section className="gallery" data-reveal>
         <figure>
           <img src={shot('wrong-book')} alt="错题本" loading="lazy" />
           <figcaption>错题本 · 先看分布再逐题过</figcaption>
@@ -99,7 +137,7 @@ function Home({ go, platform, theme }) {
         </figure>
       </section>
 
-      <section className="faq">
+      <section className="faq" data-reveal>
         <h2>常见问题</h2>
         <div className="faq-list">
           {FAQ.map((item, i) => (
@@ -116,7 +154,7 @@ function Home({ go, platform, theme }) {
         </div>
       </section>
 
-      <section className="closing">
+      <section className="closing" data-reveal>
         <h2>装上就能开始刷</h2>
         <p>不用注册，不用联网，题库已经在安装包里了。</p>
         <a
@@ -207,6 +245,7 @@ function Download({ platform }) {
 
 export default function App() {
   const [path, go] = useRoute()
+  useReveal()
   const platform = usePlatform()
   const [theme, toggleTheme] = useTheme()
 

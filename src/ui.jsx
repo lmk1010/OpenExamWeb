@@ -98,6 +98,42 @@ export function Logo({ size = 26 }) {
   )
 }
 
+/* 进入视口再淡入。IntersectionObserver 一次性触发，滚回去不会重放 —— 
+   来回滚动时元素不停淡入淡出是最廉价的那种"动效"。 */
+export function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('[data-reveal]')
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('in'))
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          e.target.classList.add('in')
+          io.unobserve(e.target)
+        })
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  })
+}
+
+/* 顶栏滚动后加一层底色，否则内容从它下面穿过去会糊成一片 */
+export function useScrolled() {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  return scrolled
+}
+
 export function Icon({ name, size = 21 }) {
   const common = {
     width: size,
@@ -208,6 +244,8 @@ export function Arrow({ size = 14 }) {
 
 export function Nav({ go, path, theme, onToggleTheme, platform }) {
   const primary = PRIMARY[platform]
+  const scrolled = useScrolled()
+  const [menu, setMenu] = useState(false)
   const link = (to, label) => (
     <a
       href={to}
@@ -223,7 +261,7 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
   )
 
   return (
-    <header className="nav">
+    <header className={`nav${scrolled ? ' scrolled' : ''}${menu ? ' open' : ''}`}>
       <a
         className="brand"
         href="/"
@@ -244,6 +282,15 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
         </a>
       </nav>
       <button
+        className="icon-btn burger"
+        type="button"
+        onClick={() => setMenu((v) => !v)}
+        aria-label="菜单"
+      >
+        <span />
+        <span />
+      </button>
+      <button
         className="icon-btn"
         type="button"
         onClick={onToggleTheme}
@@ -255,6 +302,24 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
       <a className="btn btn-sm" href={primary.href}>
         {primary.label}
       </a>
+      {menu ? (
+        <div className="nav-sheet" onClick={() => setMenu(false)}>
+          {path === '/' ? <a href="#features">功能</a> : null}
+          {path === '/' ? <a href="#shots">界面</a> : null}
+          <a
+            href="/download"
+            onClick={(e) => {
+              e.preventDefault()
+              go('/download')
+            }}
+          >
+            下载
+          </a>
+          <a href={RELEASE.github} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+        </div>
+      ) : null}
     </header>
   )
 }
