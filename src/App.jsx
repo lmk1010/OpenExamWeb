@@ -1,11 +1,12 @@
+const DL = 'https://dl.openexam.cc'
 const RELEASE = {
   version: '0.2.2',
   tag: 'v0.2.2',
   github: 'https://github.com/lmk1010/OpenExam',
   releases: 'https://github.com/lmk1010/OpenExam/releases/latest',
-  macDmg: 'https://github.com/lmk1010/OpenExam/releases/download/v0.2.2/OpenExam-0.2.2-mac-arm64.dmg',
-  macZip: 'https://github.com/lmk1010/OpenExam/releases/download/v0.2.2/OpenExam-0.2.2-mac-arm64.zip',
-  winExe: 'https://github.com/lmk1010/OpenExam/releases/download/v0.2.2/OpenExam-0.2.2-win-x64.exe',
+  macDmg: `${DL}/v0.2.2/OpenExam-0.2.2-mac-arm64.dmg`,
+  macZip: `${DL}/v0.2.2/OpenExam-0.2.2-mac-arm64.zip`,
+  winExe: `${DL}/v0.2.2/OpenExam-0.2.2-win-x64.exe`,
 }
 
 const CAPABILITIES = [
@@ -134,7 +135,7 @@ export default function App() {
         <section id="download" className="section download">
           <div className="section-head">
             <h2>下载 OpenExam</h2>
-            <p>当前最新正式版 v{RELEASE.version}，直接从 GitHub Releases 获取。</p>
+            <p>当前最新正式版 v{RELEASE.version}，经 dl.openexam.cc 分发。</p>
           </div>
           <div className="download-grid">
             <a className="download-item is-primary" href={RELEASE.macDmg}>
