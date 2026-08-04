@@ -19,4 +19,4 @@ npm run build
 
 ## 域名
 
-推荐使用 `openexam.online`（`.com` / `.io` 已被占用）。
+线上域名：`openexam.cc`（Cloudflare DNS → `172.245.62.112`）。
