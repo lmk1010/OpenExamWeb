@@ -104,8 +104,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   align-items: center;
   gap: 9px;
   font-weight: 700;
-  font-size: 15.5px;
-  letter-spacing: -0.02em;
+  font-size: 16.5px;
+  letter-spacing: -0.025em;
   margin-right: auto;
 }
 
@@ -201,24 +201,28 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .eyebrow:hover { color: var(--ink); border-color: var(--line-2); }
 
-.eyebrow .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16);
+.eyebrow-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  color: #fff;
+  background: linear-gradient(135deg, #f0862c, #ec4a79 42%, #9b5de5 78%, #5b6be8);
+  box-shadow: 0 2px 8px rgba(236, 74, 121, 0.35);
 }
 
 .hero h1 {
   margin: 22px 0 0;
-  font-size: clamp(30px, 4.4vw, 50px);
+  font-size: clamp(28px, 3.8vw, 44px);
   line-height: 1.14;
   letter-spacing: -0.04em;
 }
 
 .lead {
   margin: 18px auto 0;
-  max-width: 520px;
+  max-width: 460px;
   color: var(--muted);
   font-size: clamp(14px, 1.2vw, 15.5px);
   line-height: 1.8;
@@ -279,7 +283,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .features { padding: clamp(64px, 9vw, 104px) 0 0; }
 
 .features h2, .faq h2, .closing h2 {
-  font-size: clamp(22px, 2.6vw, 30px);
+  font-size: clamp(20px, 2.2vw, 26px);
   letter-spacing: -0.035em;
 }
 
@@ -298,16 +302,26 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .card:hover { border-color: var(--line-2); background: var(--panel-hi); transform: translateY(-2px); }
 
 .card-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  color: #6f7cf7;
-  background: rgba(111, 124, 247, 0.12);
-  border: 1px solid rgba(111, 124, 247, 0.26);
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  color: #8b96ff;
+  background:
+    linear-gradient(160deg, rgba(139, 150, 255, 0.2), rgba(139, 150, 255, 0.05));
+  box-shadow:
+    0 0 0 1px rgba(139, 150, 255, 0.24) inset,
+    0 1px 0 rgba(255, 255, 255, 0.14) inset;
 }
+
+.card:nth-child(2) .card-icon { color: #ff9d5c; background: linear-gradient(160deg, rgba(255,157,92,0.2), rgba(255,157,92,0.05)); box-shadow: 0 0 0 1px rgba(255,157,92,0.24) inset, 0 1px 0 rgba(255,255,255,0.14) inset; }
+.card:nth-child(3) .card-icon { color: #ff7a8f; background: linear-gradient(160deg, rgba(255,122,143,0.2), rgba(255,122,143,0.05)); box-shadow: 0 0 0 1px rgba(255,122,143,0.24) inset, 0 1px 0 rgba(255,255,255,0.14) inset; }
+.card:nth-child(4) .card-icon { color: #4ec9a8; background: linear-gradient(160deg, rgba(78,201,168,0.2), rgba(78,201,168,0.05)); box-shadow: 0 0 0 1px rgba(78,201,168,0.24) inset, 0 1px 0 rgba(255,255,255,0.14) inset; }
+.card:nth-child(5) .card-icon { color: #b98cff; background: linear-gradient(160deg, rgba(185,140,255,0.2), rgba(185,140,255,0.05)); box-shadow: 0 0 0 1px rgba(185,140,255,0.24) inset, 0 1px 0 rgba(255,255,255,0.14) inset; }
+.card:nth-child(6) .card-icon { color: #6fb6ff; background: linear-gradient(160deg, rgba(111,182,255,0.2), rgba(111,182,255,0.05)); box-shadow: 0 0 0 1px rgba(111,182,255,0.24) inset, 0 1px 0 rgba(255,255,255,0.14) inset; }
 
 .card h3 { margin: 16px 0 8px; font-size: 16.5px; }
 .card p { color: var(--muted); font-size: 14px; line-height: 1.72; }
@@ -515,7 +529,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .split-text h2 {
   margin-top: 16px;
-  font-size: clamp(21px, 2.4vw, 28px);
+  font-size: clamp(19px, 2vw, 23px);
   line-height: 1.35;
   letter-spacing: -0.035em;
 }

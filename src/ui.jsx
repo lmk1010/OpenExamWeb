@@ -134,59 +134,85 @@ export function useScrolled() {
   return scrolled
 }
 
-export function Icon({ name, size = 21 }) {
-  const common = {
-    width: size,
-    height: size,
-    viewBox: '0 0 24 24',
-    fill: 'none',
+export function Icon({ name, size = 22 }) {
+  /* 双层画法：低透明度的实心块打底，再压一层描边细节。单线条图标放大到
+     卡片里就是一根铁丝，撑不起来。 */
+  const box = { width: size, height: size, viewBox: '0 0 28 28', fill: 'none' }
+  const solid = { fill: 'currentColor', opacity: 0.16 }
+  const line = {
     stroke: 'currentColor',
-    strokeWidth: 1.7,
+    strokeWidth: 1.5,
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
   }
+
   switch (name) {
-    case 'bank':
+    case 'bank': // 一摞题册，最上面一本翻开
       return (
-        <svg {...common}>
-          <path d="M12 6.5C10.4 5 8.2 4.4 5 4.6v12.2c3.2-.2 5.4.4 7 1.9 1.6-1.5 3.8-2.1 7-1.9V4.6c-3.2-.2-5.4.4-7 1.9Z" />
-          <path d="M12 6.5V19" />
+        <svg {...box}>
+          <rect x="4" y="9" width="20" height="15" rx="3.2" {...solid} />
+          <path d="M4.8 21.5h18.4" {...line} opacity="0.5" />
+          <path
+            d="M14 8.6c-1.9-1.8-4.3-2.6-7.2-2.5v11.6c2.9-.1 5.3.7 7.2 2.5 1.9-1.8 4.3-2.6 7.2-2.5V6.1c-2.9-.1-5.3.7-7.2 2.5Z"
+            {...line}
+          />
+          <path d="M14 8.6v11.6" {...line} />
         </svg>
       )
-    case 'paper':
+    case 'paper': // 试卷 + 模块分区
       return (
-        <svg {...common}>
-          <path d="M7 3.5h7l4 4v13H7z" />
-          <path d="M14 3.5v4h4" />
-          <path d="M10 12h6M10 15.5h4" />
+        <svg {...box}>
+          <path d="M7 4h9l5 5v15H7z" {...solid} />
+          <path d="M7.5 4.5h8.2l4.8 4.8v14.2H7.5z" {...line} />
+          <path d="M15.7 4.5v4.8h4.8" {...line} />
+          <rect x="10.4" y="12.6" width="7" height="2.4" rx="1.2" {...line} />
+          <path d="M10.4 18.6h4.2" {...line} />
         </svg>
       )
-    case 'wrong':
+    case 'wrong': // 错题本：书签 + 叉
       return (
-        <svg {...common}>
-          <path d="M6 4h9l3 3v13l-6-3-6 3z" />
-          <path d="M10.5 9.5 14 13M14 9.5 10.5 13" />
+        <svg {...box}>
+          <path d="M7 4.5h11.5a2 2 0 0 1 2 2V24l-6.8-3.4L7 24z" {...solid} />
+          <path d="M7.6 5.2h10.6a1.8 1.8 0 0 1 1.8 1.8v16.2l-6.2-3.1-6.2 3.1z" {...line} />
+          <path d="M11.7 10.4 16 14.6M16 10.4l-4.3 4.2" {...line} />
         </svg>
       )
-    case 'chart':
+    case 'chart': // 走势：柱 + 上扬折线
       return (
-        <svg {...common}>
-          <path d="M4 19h16" />
-          <path d="M7 19V11M12 19V6M17 19v-5" />
+        <svg {...box}>
+          <rect x="5" y="14" width="4" height="8" rx="1.6" {...solid} />
+          <rect x="12" y="10" width="4" height="12" rx="1.6" {...solid} />
+          <rect x="19" y="6" width="4" height="16" rx="1.6" {...solid} />
+          <path d="M4.5 23.5h19" {...line} />
+          <path d="M7 15.5v6M14 11.5v10M21 7.5v14" {...line} />
+          <path d="M6.4 12.2 12.4 8l3.6 2.6 5.6-5.4" {...line} opacity="0.65" />
         </svg>
       )
-    case 'ai':
+    case 'ai': // 讲题：对话框里一颗火花
       return (
-        <svg {...common}>
-          <path d="m12 4 1.7 4.3L18 10l-4.3 1.7L12 16l-1.7-4.3L6 10l4.3-1.7z" />
-          <path d="M18.5 16.5 19 18l1.5.5L19 19l-.5 1.5L18 19l-1.5-.5L18 18z" />
+        <svg {...box}>
+          <path d="M5 8.4A3.4 3.4 0 0 1 8.4 5h11.2A3.4 3.4 0 0 1 23 8.4v6.8a3.4 3.4 0 0 1-3.4 3.4h-6l-4.9 3.6v-3.6h-.3A3.4 3.4 0 0 1 5 15.2z" {...solid} />
+          <path d="M5.7 8.6a3 3 0 0 1 3-3h10.6a3 3 0 0 1 3 3v6.4a3 3 0 0 1-3 3h-5.6l-4.4 3.2V18H8.7a3 3 0 0 1-3-3z" {...line} />
+          <path d="m14 8.6 1.1 2.7 2.7 1.1-2.7 1.1L14 16.2l-1.1-2.7-2.7-1.1 2.7-1.1z" {...line} />
         </svg>
       )
-    case 'lock':
+    case 'lock': // 隐私：盾牌里一把锁
       return (
-        <svg {...common}>
-          <rect x="5" y="10" width="14" height="10" rx="2.5" />
-          <path d="M8.5 10V7.5a3.5 3.5 0 1 1 7 0V10" />
+        <svg {...box}>
+          <path d="M14 4 23 7v7.4c0 4.6-3.5 8.3-9 9.6-5.5-1.3-9-5-9-9.6V7z" {...solid} />
+          <path d="M14 4.8 22.2 7.6v6.8c0 4.2-3.2 7.6-8.2 8.8-5-1.2-8.2-4.6-8.2-8.8V7.6z" {...line} />
+          <rect x="10.8" y="13" width="6.4" height="5.2" rx="1.6" {...line} />
+          <path d="M12.2 13v-1.5a1.8 1.8 0 0 1 3.6 0V13" {...line} />
+        </svg>
+      )
+    case 'spark': // 顶部小标签用：一颗四角星
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <path
+            d="m12 3.4 2 5.2 5.2 2-5.2 2-2 5.2-2-5.2-5.2-2 5.2-2z"
+            fill="currentColor"
+          />
+          <path d="m19 15.4.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="currentColor" opacity="0.6" />
         </svg>
       )
     case 'apple':
@@ -209,14 +235,14 @@ export function Icon({ name, size = 21 }) {
       )
     case 'sun':
       return (
-        <svg {...common}>
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
         </svg>
       )
     case 'moon':
       return (
-        <svg {...common}>
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5" />
         </svg>
       )
@@ -270,7 +296,7 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
           go('/')
         }}
       >
-        <Logo size={26} />
+        <Logo size={30} />
         <span>OpenExam</span>
       </a>
       <nav className="nav-links">
@@ -328,7 +354,7 @@ export function Footer({ go }) {
   return (
     <footer className="foot">
       <div className="foot-brand">
-        <Logo size={22} />
+        <Logo size={24} />
         <span>OpenExam</span>
       </div>
       <div className="foot-links">

@@ -24,19 +24,18 @@ function Home({ go, platform, theme }) {
     <>
       <section className="hero">
         <a className="eyebrow" href={RELEASE.githubApp} target="_blank" rel="noreferrer">
-          <span className="dot" />
+          <span className="eyebrow-mark">
+            <Icon name="spark" size={12} />
+          </span>
           手机端 v{RELEASE.appVersion} 已发布
-          <Arrow />
+          <Arrow size={13} />
         </a>
         <h1>
           把整个题库
           <br />
           装进自己的设备
         </h1>
-        <p className="lead">
-          15936 道真题、137 套历年卷，连图一起打包。做题、模考、错题复盘、成绩统计全程离线，
-          数据只留在你自己手上。
-        </p>
+        <p className="lead">15936 道真题装在本机，做题、模考、复盘全程离线。</p>
         <div className="cta">
           <a className="btn btn-lg" href={primary.href}>
             {primary.label}
@@ -80,7 +79,7 @@ function Home({ go, platform, theme }) {
 
       <section className="features" id="features" data-reveal>
         <h2>刷题该有的样子</h2>
-        <p className="sub">不做社区，不做排行榜。把做题、复盘、看进步这三件事做扎实。</p>
+        <p className="sub">做题、复盘、看进步，三件事做扎实。</p>
         <div className="grid">
           {FEATURES.map((f) => (
             <article key={f.title} className="card">
@@ -98,10 +97,7 @@ function Home({ go, platform, theme }) {
         <div className="split-text">
           <span className="tag">桌面端</span>
           <h2>做完一套，报告立刻摆在眼前</h2>
-          <p>
-            正确率趋势、分类正确率、逐题分布、和历史平均的对比，一屏看完。
-            错的题一键重做，看不懂的直接问 AI。
-          </p>
+          <p>趋势、分类、逐题分布、和历史平均的对比，一屏看完。</p>
         </div>
         <div className="split-shot">
           <img src="/brand/report-dark.png" alt="OpenExam 桌面端成绩报告" loading="lazy" />
@@ -112,10 +108,7 @@ function Home({ go, platform, theme }) {
         <div className="split-text">
           <span className="tag">成就</span>
           <h2>练到哪一步，自己看得见</h2>
-          <p>
-            题量、坚持、精度、考场、攻坚五类成就，铜银金铂四个等级。
-            全部按本机数据算，达成时当场弹出来。
-          </p>
+          <p>五类成就、四个等级，全按本机数据算，达成当场弹出。</p>
         </div>
         <div className="split-shot">
           <img src="/brand/badge-desk-dark.png" alt="OpenExam 成就解锁" loading="lazy" />
@@ -156,7 +149,7 @@ function Home({ go, platform, theme }) {
 
       <section className="closing" data-reveal>
         <h2>装上就能开始刷</h2>
-        <p>不用注册，不用联网，题库已经在安装包里了。</p>
+        <p>题库已经在安装包里。</p>
         <a
           className="btn btn-lg"
           href="/download"
