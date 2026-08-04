@@ -67,6 +67,37 @@ export function useTheme() {
   return [theme, toggle]
 }
 
+/* 品牌书本。直接内联在组件里：走独立的 /brand/logo.svg 时，路径不带 hash，
+   Cloudflare 会一直发旧文件，改了半天线上还是老的。内联进 bundle 就没这问题。 */
+export function Logo({ size = 26 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="oe-g" x1="16" y1="14" x2="84" y2="82" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#F0862C" />
+          <stop offset="0.34" stopColor="#EC4A79" />
+          <stop offset="0.68" stopColor="#9B5DE5" />
+          <stop offset="1" stopColor="#5B6BE8" />
+        </linearGradient>
+        <linearGradient id="oe-p" x1="22" y1="18" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#FFF4E7" />
+          <stop offset="0.55" stopColor="#FFFEFC" />
+          <stop offset="1" stopColor="#FFF8FC" />
+        </linearGradient>
+      </defs>
+      <g stroke="url(#oe-g)" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M28 23.5 L21.5 26.4 C19.8 27.2 19 28.4 19 30 L19 70.4 C19 72.5 20.7 74.2 22.9 74.2 L43.5 74.2" />
+        <path d="M72 23.5 L78.5 26.4 C80.2 27.2 81 28.4 81 30 L81 70.4 C81 72.5 79.3 74.2 77.1 74.2 L56.5 74.2" />
+        <path d="M50 30.5 C44.2 21.4 37 17.2 28 17.2 L28 66.2 C37 66.2 44.6 69.6 50 76.4 Z" fill="url(#oe-p)" />
+        <path d="M50 30.5 C55.8 21.4 63 17.2 72 17.2 L72 66.2 C63 66.2 55.4 69.6 50 76.4 Z" fill="url(#oe-p)" />
+        <path d="M58 38.6 L67.6 35.9" strokeWidth="4" />
+        <path d="M58 46.6 L67.6 43.9" strokeWidth="4" />
+        <path d="M58 54.6 L67.6 51.9" strokeWidth="4" />
+      </g>
+    </svg>
+  )
+}
+
 export function Icon({ name, size = 21 }) {
   const common = {
     width: size,
@@ -201,7 +232,7 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
           go('/')
         }}
       >
-        <img src="/brand/logo.svg" alt="" width="26" height="26" />
+        <Logo size={26} />
         <span>OpenExam</span>
       </a>
       <nav className="nav-links">
@@ -232,7 +263,7 @@ export function Footer({ go }) {
   return (
     <footer className="foot">
       <div className="foot-brand">
-        <img src="/brand/logo.svg" alt="" width="22" height="22" />
+        <Logo size={22} />
         <span>OpenExam</span>
       </div>
       <div className="foot-links">
