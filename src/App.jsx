@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { DOWNLOADS, FAQ, FEATURES, PRIMARY, RELEASE } from './data.js'
 import { Arrow, Footer, Icon, Nav, usePlatform, useRoute, useTheme } from './ui.jsx'
 
-function Home({ go, platform }) {
+function Home({ go, platform, theme }) {
+  // 深色站配深色截图、浅色站配浅色截图。桌面端截图目前只有浅色一版，
+  // 深色版补齐前先沿用它，不然图和页面差着一个色调，看着像贴错了。
+  const shot = (name) => `/shots/${name}-${theme === 'light' ? 'light' : 'dark'}.jpg`
+  const desk = theme === 'light' ? '/brand/demo1.png' : '/brand/demo1.png'
   const primary = PRIMARY[platform]
   const [open, setOpen] = useState(0)
 
@@ -45,9 +49,9 @@ function Home({ go, platform }) {
 
       <section className="showcase" id="shots">
         <div className="frame">
-          <img src="/brand/demo1.png" alt="OpenExam 桌面端学习中心" />
+          <img src={desk} alt="OpenExam 桌面端学习中心" />
         </div>
-        <img className="phone" src="/shots/home.jpg" alt="OpenExam 手机端练习首页" loading="lazy" />
+        <img className="phone" src={shot('home')} alt="OpenExam 手机端练习首页" loading="lazy" />
       </section>
 
       <section className="stats">
@@ -82,15 +86,15 @@ function Home({ go, platform }) {
 
       <section className="gallery">
         <figure>
-          <img src="/shots/wrong-book.jpg" alt="错题本" loading="lazy" />
+          <img src={shot('wrong-book')} alt="错题本" loading="lazy" />
           <figcaption>错题本 · 先看分布再逐题过</figcaption>
         </figure>
         <figure>
-          <img src="/shots/stats.jpg" alt="学习统计" loading="lazy" />
+          <img src={shot('stats')} alt="学习统计" loading="lazy" />
           <figcaption>统计 · 题量、正确率与走势</figcaption>
         </figure>
         <figure>
-          <img src="/shots/badge.jpg" alt="成就徽章" loading="lazy" />
+          <img src={shot('badge')} alt="成就徽章" loading="lazy" />
           <figcaption>成就 · 按本机数据计算</figcaption>
         </figure>
       </section>
@@ -211,7 +215,11 @@ export default function App() {
       <div className="glow" aria-hidden="true" />
       <Nav go={go} path={path} theme={theme} onToggleTheme={toggleTheme} platform={platform} />
       <main>
-        {path === '/download' ? <Download platform={platform} /> : <Home go={go} platform={platform} />}
+        {path === '/download' ? (
+          <Download platform={platform} />
+        ) : (
+          <Home go={go} platform={platform} theme={theme} />
+        )}
       </main>
       <Footer go={go} />
     </div>
