@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="360" height="360" fill="none">
+  <defs>
+    <linearGradient id="g" x1="14" y1="16" x2="86" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F0862C"/>
+      <stop offset="0.34" stop-color="#EC4A79"/>
+      <stop offset="0.68" stop-color="#9B5DE5"/>
+      <stop offset="1" stop-color="#5B6BE8"/>
+    </linearGradient>
+    <linearGradient id="p" x1="20" y1="20" x2="80" y2="76" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF3E4"/>
+      <stop offset="0.55" stop-color="#FFFDFB"/>
+      <stop offset="1" stop-color="#FFF7FB"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#g)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 27 L21 30 C19.3 30.8 18.5 32 18.5 33.6 L18.5 69.5 C18.5 71.6 20.2 73.2 22.4 73.2 L44 73.2" />
+    <path d="M73 27 L79 30 C80.7 30.8 81.5 32 81.5 33.6 L81.5 69.5 C81.5 71.6 79.8 73.2 77.6 73.2 L56 73.2" />
+    <path d="M50 33.5 C43.5 25 36.5 20.8 27 20.8 L27 65.5 C36.5 65.5 44.5 68.6 50 75.2 Z" fill="url(#p)"/>
+    <path d="M50 33.5 C56.5 25 63.5 20.8 73 20.8 L73 65.5 C63.5 65.5 55.5 68.6 50 75.2 Z" fill="url(#p)"/>
+    <path d="M58.5 41 L68.5 38.2" stroke-width="4.4"/>
+    <path d="M58.5 49 L68.5 46.2" stroke-width="4.4"/>
+    <path d="M58.5 57 L68.5 54.2" stroke-width="4.4"/>
+  </g>
+</svg>

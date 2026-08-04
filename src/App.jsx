@@ -1,61 +1,219 @@
-const DL = 'https://dl.openexam.cc'
-const RELEASE = {
-  version: '0.2.2',
-  github: 'https://github.com/lmk1010/OpenExam',
-  macDmg: `${DL}/v0.2.2/OpenExam-0.2.2-mac-arm64.dmg`,
-  macZip: `${DL}/v0.2.2/OpenExam-0.2.2-mac-arm64.zip`,
-  winExe: `${DL}/v0.2.2/OpenExam-0.2.2-win-x64.exe`,
+import { useState } from 'react'
+import { DOWNLOADS, FAQ, FEATURES, PRIMARY, RELEASE } from './data.js'
+import { Arrow, Footer, Icon, Nav, usePlatform, useRoute, useTheme } from './ui.jsx'
+
+function Home({ go, platform }) {
+  const primary = PRIMARY[platform]
+  const [open, setOpen] = useState(0)
+
+  return (
+    <>
+      <section className="hero">
+        <a className="eyebrow" href={RELEASE.githubApp} target="_blank" rel="noreferrer">
+          <span className="dot" />
+          手机端 v{RELEASE.appVersion} 已发布
+          <Arrow />
+        </a>
+        <h1>
+          把整个题库
+          <br />
+          装进自己的设备
+        </h1>
+        <p className="lead">
+          15936 道真题、137 套历年卷，连图一起打包。做题、模考、错题复盘、成绩统计全程离线，
+          数据只留在你自己手上。
+        </p>
+        <div className="cta">
+          <a className="btn btn-lg" href={primary.href}>
+            {primary.label}
+          </a>
+          <a
+            className="btn btn-lg btn-ghost"
+            href="/download"
+            onClick={(e) => {
+              e.preventDefault()
+              go('/download')
+            }}
+          >
+            全部版本
+          </a>
+        </div>
+        <p className="meta">
+          桌面端 v{RELEASE.version} · 手机端 v{RELEASE.appVersion} · 免费开源
+        </p>
+      </section>
+
+      <section className="showcase" id="shots">
+        <div className="frame">
+          <img src="/brand/demo1.png" alt="OpenExam 桌面端学习中心" />
+        </div>
+        <img className="phone" src="/shots/home.jpg" alt="OpenExam 手机端练习首页" loading="lazy" />
+      </section>
+
+      <section className="stats">
+        {[
+          ['15,936', '道真题'],
+          ['137', '套历年卷'],
+          ['4,230', '张题目配图'],
+          ['0', '次联网请求'],
+        ].map(([n, l]) => (
+          <div key={l} className="stat">
+            <strong>{n}</strong>
+            <span>{l}</span>
+          </div>
+        ))}
+      </section>
+
+      <section className="features" id="features">
+        <h2>刷题该有的样子</h2>
+        <p className="sub">不做社区，不做排行榜。把做题、复盘、看进步这三件事做扎实。</p>
+        <div className="grid">
+          {FEATURES.map((f) => (
+            <article key={f.title} className="card">
+              <span className="card-icon">
+                <Icon name={f.icon} />
+              </span>
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="gallery">
+        <figure>
+          <img src="/shots/wrong-book.jpg" alt="错题本" loading="lazy" />
+          <figcaption>错题本 · 先看分布再逐题过</figcaption>
+        </figure>
+        <figure>
+          <img src="/shots/stats.jpg" alt="学习统计" loading="lazy" />
+          <figcaption>统计 · 题量、正确率与走势</figcaption>
+        </figure>
+        <figure>
+          <img src="/shots/badge.jpg" alt="成就徽章" loading="lazy" />
+          <figcaption>成就 · 按本机数据计算</figcaption>
+        </figure>
+      </section>
+
+      <section className="faq">
+        <h2>常见问题</h2>
+        <div className="faq-list">
+          {FAQ.map((item, i) => (
+            <div key={item.q} className={`faq-item${open === i ? ' open' : ''}`}>
+              <button type="button" onClick={() => setOpen(open === i ? -1 : i)}>
+                <span>{item.q}</span>
+                <i />
+              </button>
+              <div className="faq-body">
+                <p>{item.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="closing">
+        <h2>装上就能开始刷</h2>
+        <p>不用注册，不用联网，题库已经在安装包里了。</p>
+        <a
+          className="btn btn-lg"
+          href="/download"
+          onClick={(e) => {
+            e.preventDefault()
+            go('/download')
+          }}
+        >
+          去下载
+        </a>
+      </section>
+    </>
+  )
 }
 
-function detectPlatform() {
-  if (typeof navigator === 'undefined') return 'mac'
-  return navigator.userAgent.toLowerCase().includes('windows') ? 'win' : 'mac'
+function Download({ platform }) {
+  const order = [platform === 'win' ? 'win' : platform === 'android' ? 'android' : 'mac']
+  const cards = [...DOWNLOADS].sort(
+    (a, b) => order.indexOf(b.key) - order.indexOf(a.key),
+  )
+
+  return (
+    <section className="dl-page">
+      <header className="dl-head">
+        <h1>下载 OpenExam</h1>
+        <p>
+          桌面端 v{RELEASE.version} · 手机端 v{RELEASE.appVersion}。题库随安装包分发，
+          装完即用，不需要注册或联网。
+        </p>
+      </header>
+
+      <div className="dl-cards">
+        {cards.map((d) => (
+          <article key={d.key} className={`dl-card${d.key === order[0] ? ' current' : ''}`}>
+            <div className="dl-card-head">
+              <span className="dl-os">
+                <Icon name={d.key === 'mac' ? 'apple' : d.key === 'win' ? 'windows' : 'android'} size={19} />
+              </span>
+              <div>
+                <h2>{d.platform}</h2>
+                <p>{d.note}</p>
+              </div>
+              {d.key === order[0] ? <span className="dl-badge">你的设备</span> : null}
+            </div>
+            <ul className="dl-files">
+              {d.files.map((f) => (
+                <li key={f.href}>
+                  <a className={f.primary ? 'btn btn-block' : 'file-link'} href={f.href}>
+                    {f.label}
+                    <em>{f.size}</em>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="dl-ver">版本 {d.version}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="dl-notes">
+        <div>
+          <h3>安装遇到提示怎么办</h3>
+          <p>
+            macOS 首次打开若提示「无法验证开发者」，在「系统设置 → 隐私与安全性」里点一次「仍要打开」。
+            Windows 的 SmartScreen 提示选「更多信息 → 仍要运行」。安装包没有做数字签名，因为签名证书是按年付费的。
+          </p>
+        </div>
+        <div>
+          <h3>Android 装哪个包</h3>
+          <p>
+            2018 年之后的机器基本都是 arm64，选第一个就行；实在不确定就下通用包，它把所有架构都带上了，
+            代价是大 15 MB。安装时系统会提示「来自未知来源」，允许一次即可。
+          </p>
+        </div>
+        <div>
+          <h3>更新怎么走</h3>
+          <p>
+            两端都不会自动更新，也不会后台联网检查版本。新版发布后回到这一页下载覆盖安装即可，
+            本机的答题记录和错题不会丢。
+          </p>
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export default function App() {
-  const platform = detectPlatform()
-  const primaryHref = platform === 'win' ? RELEASE.winExe : RELEASE.macDmg
-  const primaryLabel = platform === 'win' ? '下载 Windows' : '下载 macOS'
+  const [path, go] = useRoute()
+  const platform = usePlatform()
+  const [theme, toggleTheme] = useTheme()
 
   return (
     <div className="page">
-      <header className="top">
-        <a className="logo" href="/">
-          <img src="/brand/app-icon.png" alt="" width="28" height="28" />
-          <span>OpenExam</span>
-        </a>
-        <div className="top-right">
-          <a href={RELEASE.github} target="_blank" rel="noreferrer">GitHub</a>
-          <a className="top-dl" href={primaryHref}>{primaryLabel}</a>
-        </div>
-      </header>
-
-      <main className="hero">
-        <p className="eyebrow">本地优先 · 桌面端</p>
-        <h1>OpenExam</h1>
-        <p className="lead">本地备考工作台。题库、练习、AI 辅导，数据留在你的电脑上。</p>
-
-        <div className="actions">
-          <a className="primary" href={primaryHref}>{primaryLabel}</a>
-          <div className="alts">
-            <a href={RELEASE.macDmg}>macOS DMG</a>
-            <span>·</span>
-            <a href={RELEASE.macZip}>ZIP</a>
-            <span>·</span>
-            <a href={RELEASE.winExe}>Windows</a>
-          </div>
-        </div>
-        <p className="meta">v{RELEASE.version}</p>
+      <div className="glow" aria-hidden="true" />
+      <Nav go={go} path={path} theme={theme} onToggleTheme={toggleTheme} platform={platform} />
+      <main>
+        {path === '/download' ? <Download platform={platform} /> : <Home go={go} platform={platform} />}
       </main>
-
-      <section className="shot" aria-label="产品界面">
-        <img src="/brand/demo1.png" alt="OpenExam 学习中心" />
-      </section>
-
-      <footer className="foot">
-        <span>OpenExam</span>
-        <a href={RELEASE.github} target="_blank" rel="noreferrer">源码</a>
-      </footer>
+      <Footer go={go} />
     </div>
   )
 }

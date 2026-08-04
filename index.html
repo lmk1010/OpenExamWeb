@@ -2,10 +2,19 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/brand/app-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/brand/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="OpenExam — 本地优先的 AI 备考桌面应用。智能出卷、AI 导师、成长体系，数据留在你的机器上。" />
+    <meta name="description" content="OpenExam — 离线刷题应用。15936 道真题随包安装，做题、模考、错题复盘、成绩统计全程不联网，数据留在你自己的设备上。" />
+    <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f7f9" media="(prefers-color-scheme: light)" />
     <title>OpenExam</title>
+    <script>
+      (function () {
+        var saved = localStorage.getItem('oe-theme')
+        var system = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        document.documentElement.dataset.theme = saved || system
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
