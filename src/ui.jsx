@@ -98,13 +98,14 @@ export function Logo({ size = 26 }) {
   )
 }
 
-/* 进入视口再淡入。IntersectionObserver 一次性触发，滚回去不会重放 —— 
-   来回滚动时元素不停淡入淡出是最廉价的那种"动效"。 */
-export function useReveal() {
+/* 进入视口再淡入。IntersectionObserver 一次性触发，滚回去不会重放。
+   path 变化时重新绑定，保证下载页也能播入场动画。 */
+export function useReveal(path) {
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]')
+    els.forEach((el) => el.classList.remove('in'))
     if (!('IntersectionObserver' in window)) {
-      els.forEach((el) => el.classList.add('in'))
+      requestAnimationFrame(() => els.forEach((el) => el.classList.add('in')))
       return
     }
     const io = new IntersectionObserver(
@@ -115,11 +116,15 @@ export function useReveal() {
           io.unobserve(e.target)
         })
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
     )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  })
+    // 首屏元素下一帧再 observe，让 CSS 初始态先生效，避免闪一下
+    const id = requestAnimationFrame(() => els.forEach((el) => io.observe(el)))
+    return () => {
+      cancelAnimationFrame(id)
+      io.disconnect()
+    }
+  }, [path])
 }
 
 /* 顶栏滚动后加一层底色，否则内容从它下面穿过去会糊成一片 */
@@ -302,6 +307,7 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
       <nav className="nav-links">
         {path === '/' ? <a href="#features">功能</a> : null}
         {path === '/' ? <a href="#shots">界面</a> : null}
+        {link('/banks', '题库')}
         {link('/download', '下载')}
         <a href={RELEASE.github} target="_blank" rel="noreferrer">
           GitHub
@@ -333,6 +339,15 @@ export function Nav({ go, path, theme, onToggleTheme, platform }) {
           {path === '/' ? <a href="#features">功能</a> : null}
           {path === '/' ? <a href="#shots">界面</a> : null}
           <a
+            href="/banks"
+            onClick={(e) => {
+              e.preventDefault()
+              go('/banks')
+            }}
+          >
+            题库
+          </a>
+          <a
             href="/download"
             onClick={(e) => {
               e.preventDefault()
@@ -358,6 +373,15 @@ export function Footer({ go }) {
         <span>OpenExam</span>
       </div>
       <div className="foot-links">
+        <a
+          href="/banks"
+          onClick={(e) => {
+            e.preventDefault()
+            go('/banks')
+          }}
+        >
+          题库
+        </a>
         <a
           href="/download"
           onClick={(e) => {
