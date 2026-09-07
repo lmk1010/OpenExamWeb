@@ -267,7 +267,7 @@ function Banks({ go }) {
             {group.packs.map((p) => (
               <li className="bk-card" key={p.slug}>
                 <span className="bk-card-icon">
-                  <Icon name="bank" size={20} />
+                  <Icon name="bank" size={32} />
                 </span>
                 <h3>{p.name}</h3>
                 <p className="bk-blurb">{p.blurb}</p>
@@ -285,10 +285,12 @@ function Banks({ go }) {
                     <dd>{p.years}</dd>
                   </div>
                 </dl>
-                <a className="btn btn-block bk-get" href={p.href}>
-                  <span>下载题库</span>
-                  <em>{p.size}</em>
-                </a>
+                <div className="bk-get">
+                  <a className="btn" href={p.href}>
+                    <span>下载题库</span>
+                    <em>{p.size}</em>
+                  </a>
+                </div>
               </li>
             ))}
           </ul>

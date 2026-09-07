@@ -22,6 +22,9 @@
   --glow-b: rgba(155, 93, 229, 0.15);
   --glow-c: rgba(236, 74, 121, 0.1);
   --shot-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+  /* 卡片不描边，靠一层很浅的影子跟底色分开。深色下影子几乎看不见，
+     真正分层的是 --panel-hi 那点亮度差。 */
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.25);
   color-scheme: dark;
 }
 
@@ -41,6 +44,7 @@
   --glow-b: rgba(155, 93, 229, 0.12);
   --glow-c: rgba(240, 134, 44, 0.1);
   --shot-shadow: 0 30px 80px rgba(24, 26, 34, 0.16);
+  --card-shadow: 0 1px 2px rgba(20, 22, 28, 0.04), 0 10px 30px rgba(20, 22, 28, 0.07);
   color-scheme: light;
 }
 
@@ -80,7 +84,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 100%);
 }
 
-.hero, .features, .faq, .stats, .gallery, .showcase, .closing, .dl-page {
+/* 全站内容宽度只有这一条。新加页面忘了写进来，在宽屏上就是整页贴着
+   浏览器左右边缘 —— 窄屏看不出来，1440 以上一眼就崩。 */
+.hero, .features, .faq, .stats, .gallery, .showcase, .closing,
+.dl-page, .bk-page {
   width: min(1080px, calc(100% - 40px));
   margin-inline: auto;
 }
@@ -647,13 +654,21 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 /* 主推区：左右排，无边框 */
+/* 「你的设备」这一块收进一张卡里。
+   以前它是裸的两栏：左边 macOS 大标题，右边一个黑色大按钮悬在空白里，
+   中间隔着 64px 的沟。屏幕越宽沟越大，按钮就越像是飘着的 —— 那个按钮
+   跟它下面 Windows / Android 那两行细行也完全不是一个量级。
+   放进同一张面板，两栏就有了共同的边界，大小差也成了主次关系。 */
 .dl-feature {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: end;
-  gap: clamp(28px, 5vw, 64px);
-  margin-top: clamp(40px, 6vw, 72px);
-  padding: clamp(8px, 1vw, 12px) 0 clamp(28px, 4vw, 40px);
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: clamp(36px, 5vw, 56px);
+  padding: clamp(26px, 3vw, 34px) clamp(24px, 3vw, 34px);
+  border-radius: 26px;
+  background: var(--panel-hi);
+  box-shadow: var(--card-shadow);
 }
 
 .dl-pill {
@@ -676,8 +691,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 .dl-feature-meta h2 {
-  margin-top: 18px;
-  font-size: clamp(28px, 3.6vw, 40px);
+  margin-top: 16px;
+  font-size: clamp(26px, 3vw, 34px);
   letter-spacing: -0.045em;
   line-height: 1.1;
 }
@@ -689,12 +704,19 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   line-height: 1.75;
 }
 
-.dl-feature-action { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+/* 按钮和它的附属链接靠右对齐 —— 左边是标题，右边是动作，
+   两栏各自贴着自己那侧，中间的空白才读得出是「分隔」而不是「掉队」。 */
+.dl-feature-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
 
 .dl-cta {
   position: relative;
   overflow: hidden;
-  min-width: min(100%, 280px);
+  min-width: min(100%, 260px);
   justify-content: space-between;
   gap: 18px;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
@@ -1058,89 +1080,97 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   line-height: 1.75;
 }
 
-.bk-group { margin-top: clamp(44px, 6vw, 72px); }
+.bk-group { margin-top: clamp(44px, 6vw, 68px); }
 
-/* 分组标题和说明并排：科目名短，说明长，竖着排会把卡片推得很远 */
+/* 分组标题和说明并排：科目名短，说明长，竖着排会把卡片推得很远。
+   这里不画分隔线 —— 下面就是一排卡，再来一条横线是两层边框。 */
 .bk-group-head {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 6px 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--line);
+  gap: 6px 14px;
+  padding: 0 4px 18px;
 }
-.bk-group-head h2 { font-size: 22px; letter-spacing: -0.035em; }
+.bk-group-head h2 { font-size: 20px; letter-spacing: -0.035em; }
 .bk-group-head p { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
 
 .bk-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  margin-top: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* 不描边：一圈 1px 线会把每张卡框成一个盒子，六张排在一起就是六个盒子。
+   靠一层浅影子和一点亮度差跟底色分开就够了。 */
 .bk-card {
   display: flex;
   flex-direction: column;
-  padding: 24px 22px 22px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--panel);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.25s ease, background 0.25s ease;
+  padding: 30px 28px 26px;
+  border-radius: 24px;
+  background: var(--panel-hi);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }
 .bk-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--line-2);
-  background: var(--panel-hi);
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 18px 44px rgba(20, 22, 28, 0.12);
+}
+:root[data-theme="dark"] .bk-card:hover,
+:root:not([data-theme="light"]) .bk-card:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 18px 44px rgba(0, 0, 0, 0.4);
 }
 
+/* 图标不装进色块里。一个 42px 的圆角方块把 20px 的图标框在中间，
+   看着像个按钮而不是标识 —— 直接放大裸放，留白自己会分层。
+   上品牌色而不是墨色：墨色的细线稿在白卡上就是一团灰铁丝，
+   给个颜色它才读得出是个标识。 */
 .bk-card-icon {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  color: #aab3ff;
-  background: rgba(111, 124, 247, 0.14);
+  color: #5b64d8;
 }
-:root[data-theme="light"] .bk-card-icon { color: #5b64d8; }
+:root[data-theme="dark"] .bk-card-icon,
+:root:not([data-theme="light"]) .bk-card-icon { color: #aab3ff; }
 
-.bk-card h3 { margin-top: 16px; font-size: 19px; letter-spacing: -0.03em; }
+.bk-card h3 { margin-top: 20px; font-size: 20px; letter-spacing: -0.03em; }
 .bk-blurb {
-  margin-top: 8px;
+  margin-top: 9px;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
-/* 三个数字一排。等宽数字，免得 1974 和 16412 高低不齐 */
+/* 三个数字一排。等宽数字，免得 1,974 和 16,412 高低不齐。
+   上面那条分隔线是这张卡里唯一的线，用来把「说明」和「数据」分开。 */
 .bk-stats {
   display: flex;
-  gap: 26px;
-  margin: 20px 0 0;
-  padding: 16px 0 0;
+  gap: 30px;
+  margin: 22px 0 0;
+  padding: 18px 0 0;
   border-top: 1px solid var(--line);
 }
 .bk-stats div { min-width: 0; }
 .bk-stats dt {
   color: var(--faint);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 .bk-stats dd {
-  margin: 3px 0 0;
-  font-size: 17px;
+  margin: 5px 0 0;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
 }
 
-.bk-get { margin-top: 20px; }
+.bk-get { margin-top: auto; padding-top: 22px; }
+.bk-get .btn {
+  width: 100%;
+  justify-content: space-between;
+}
 .bk-get em {
   font-style: normal;
   font-weight: 500;
@@ -1149,78 +1179,78 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 /* 三步导入。序号做成描边圆点，别做成实心色块 —— 这一段是说明不是主角 */
-.bk-steps { margin-top: clamp(44px, 6vw, 72px); }
-.bk-steps h2 { font-size: 22px; letter-spacing: -0.035em; }
+.bk-steps { margin-top: clamp(44px, 6vw, 68px); padding: 0 4px; }
+.bk-steps h2 { font-size: 20px; letter-spacing: -0.035em; }
 .bk-steps ol {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px 32px;
-  margin: 22px 0 0;
+  gap: 26px 36px;
+  margin: 24px 0 0;
   padding: 0;
   list-style: none;
-  counter-reset: none;
 }
 .bk-step-n {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border: 1px solid var(--line-2);
   border-radius: 999px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-.bk-steps li h3 { margin-top: 13px; font-size: 16px; letter-spacing: -0.025em; }
+.bk-steps li h3 { margin-top: 14px; font-size: 16px; letter-spacing: -0.025em; }
 .bk-steps li p {
-  margin-top: 7px;
+  margin-top: 8px;
   color: var(--muted);
   font-size: 13.5px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-/* 在做的：不做成能点的卡，免得有人点了发现下不了 */
+/* 在做的：不做成能点的卡，免得有人点了发现下不了。
+   虚线框太像"待填的空位"，改成压暗的实面。 */
 .bk-soon-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 14px;
-  margin: 22px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 .bk-soon-list li {
-  padding: 18px 20px;
-  border: 1px dashed var(--line-2);
-  border-radius: 16px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: var(--panel);
 }
-.bk-soon-list h3 { font-size: 16px; letter-spacing: -0.025em; color: var(--muted); }
-.bk-soon-list p { margin-top: 5px; color: var(--faint); font-size: 13px; }
+.bk-soon-list h3 { font-size: 15.5px; letter-spacing: -0.025em; color: var(--muted); }
+.bk-soon-list p { margin-top: 6px; color: var(--faint); font-size: 13px; }
 
 .bk-own {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 20px 32px;
-  margin: clamp(44px, 6vw, 72px) 0 0;
-  padding: 28px 30px;
-  border: 1px solid var(--line);
-  border-radius: 22px;
+  gap: 20px 36px;
+  margin: clamp(44px, 6vw, 68px) 0 0;
+  padding: 30px 32px;
+  border-radius: 24px;
   background: var(--panel);
 }
-.bk-own h2 { font-size: 20px; letter-spacing: -0.03em; }
+.bk-own h2 { font-size: 19px; letter-spacing: -0.03em; }
 .bk-own p {
-  margin-top: 9px;
+  margin-top: 10px;
   max-width: 46em;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 @media (max-width: 620px) {
-  .bk-stats { gap: 18px; }
-  .bk-own { padding: 22px; }
+  .bk-stats { gap: 20px; }
+  .bk-card { padding: 24px 22px 22px; }
+  .bk-own { padding: 24px; }
   .bk-own .btn { width: 100%; }
 }
